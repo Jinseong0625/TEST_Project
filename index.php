@@ -13,7 +13,7 @@ $app = AppFactory::create();
 $api = new DBHandler();
 
 $app->addBodyParsingMiddleware();
-#$app->setBasePath("/testP");
+$app->setBasePath("/test");
 
 session_start();
 
@@ -25,6 +25,6 @@ $app->get('/user/{uid}', function ($request, $response, $args) use($api)
 	return $response;
 });
 
-
+$app->run();
 
 ?>
