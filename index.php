@@ -13,7 +13,7 @@ $app = AppFactory::create();
 $api = new DBHandler();
 
 $app->addBodyParsingMiddleware();
-$app->setBasePath("/testP");
+#$app->setBasePath("/testP");
 
 session_start();
 
