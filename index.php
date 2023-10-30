@@ -45,6 +45,10 @@ $app->post('/User', function ($request, $response, $args) use($api)
 	else
 	{
 		$row = $api->sp_insert_User($birthday,$name,$nickname,$phone);
+
+		if (is_array($row)) {
+			$row = json_encode($row);
+		}
 	}
 	
 	$response->getBody()->write($row);
