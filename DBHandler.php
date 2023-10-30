@@ -45,7 +45,7 @@ class DBHandler extends DBConnector{
         if(!($stmt = $this->db->prepare("CALL sp_insert_User(?,?,?,?)"))){
             $error = "E1000";
         }
-        if(!$stmt->bind_param("ssss", $birthday,$name,$os,$nickname,$phone)){
+        if(!$stmt->bind_param("ssss", $birthday,$name,$nickname,$phone)){
             $error = "E1001";
         }
         if(!$stmt->execute()){
