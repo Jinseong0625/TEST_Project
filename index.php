@@ -44,7 +44,7 @@ $app->post('/User', function ($request, $response, $args) use($logapi)
 	}
 	else
 	{
-		$row = $logapi->sp_insert_User($birthday,$name,$nickname,$phone);
+		$row = $api->sp_insert_User($birthday,$name,$nickname,$phone);
 	}
 	
 	$response->getBody()->write($row);
