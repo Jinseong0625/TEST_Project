@@ -25,6 +25,32 @@ $app->get('/user/{uid}', function ($request, $response, $args) use($api)
 	return $response;
 });
 
+$app->post('/User', function ($request, $response, $args) use($logapi) 
+{
+	$params = $request->getParsedBody();
+	$$birthday = $params['u_birthday'];
+	$name = $params['u_name'];
+	$nickname = $params['u_nickname'];
+	$phone = $params['u_phon'];
+	if($name == null)
+	{
+		$json_data = array
+        (
+            "error" => "E1003",
+            "data" => ""
+        );
+
+		$row = json_encode($json_data);
+	}
+	else
+	{
+		$row = $logapi->sp_insert_User($birthday,$name,$nickname,$phone);
+	}
+	
+	$response->getBody()->write($row);
+	return $response;
+});
+
 $app->run();
 
 ?>
