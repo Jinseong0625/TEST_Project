@@ -25,10 +25,10 @@ $app->get('/user/{uid}', function ($request, $response, $args) use($api)
 	return $response;
 });
 
-$app->post('/User', function ($request, $response, $args) use($logapi) 
+$app->post('/User', function ($request, $response, $args) use($api) 
 {
 	$params = $request->getParsedBody();
-	$$birthday = $params['u_birthday'];
+	$birthday = $params['u_birthday'];
 	$name = $params['u_name'];
 	$nickname = $params['u_nickname'];
 	$phone = $params['u_phon'];
