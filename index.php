@@ -58,7 +58,7 @@ $app->post('/User', function ($request, $response, $args) use($api)
 $app->post('/category', function ($request, $response, $args) use($api) 
 {
 	$params = $request->getParsedBody();
-	$name = $params['u_name'];
+	$name = $params['name'];
 	$description = $params['description'];
 	$type = $params['type'];
 	if($name == null)
