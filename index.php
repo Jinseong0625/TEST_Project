@@ -84,6 +84,34 @@ $app->post('/category', function ($request, $response, $args) use($api)
 	return $response;
 });
 
+$app->post('/board', function ($request, $response, $args) use($api) 
+{
+	$params = $request->getParsedBody();
+	$title = $params['title'];
+	$body = $params['body'];
+	if($title == null)
+	{
+		$json_data = array
+        (
+            "error" => "E1003",
+            "data" => ""
+        );
+
+		$row = json_encode($json_data);
+	}
+	else
+	{
+		$row = $api->sp_insert_board($title,$body);
+
+		if (is_array($row)) {
+			$row = json_encode($row);
+		}
+	}
+	
+	$response->getBody()->write($row);
+	return $response;
+});
+
 $app->run();
 
 ?>
