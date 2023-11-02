@@ -129,6 +129,37 @@ class DBHandler extends DBConnector{
 
         return $json_data;
     }
+
+    // 주문하기
+    public function sp_insert_order($name,$type,$uid)
+    {
+        $error = "E0000";
+
+        if(!($stmt = $this->db->prepare("CALL sp_insert_order(?,?,?)"))){
+            $error = "E1000";
+        }
+        if(!$stmt->bind_param("ssi", $name,$type,$uid)){
+            $error = "E1001";
+        }
+        if(!$stmt->execute()){
+            $error = "E1002";
+        }
+
+        $res = $stmt->get_result();
+        $data = array();
+
+        while($row = $res->fetch_assoc()){
+            $data[] = $row;
+        }
+
+        $json_data = array
+        (
+            "error" => $error,
+            "data" => $data
+        );
+
+        return $json_data;
+    }
     
 }
 

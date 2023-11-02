@@ -112,6 +112,35 @@ $app->post('/board', function ($request, $response, $args) use($api)
 	return $response;
 });
 
+$app->post('/order', function ($request, $response, $args) use($api) 
+{
+	$params = $request->getParsedBody();
+	$name = $params['name'];
+	$type = $params['type'];
+	$uid = $params['u_id'];
+	if($uid == null)
+	{
+		$json_data = array
+        (
+            "error" => "E1003",
+            "data" => ""
+        );
+
+		$row = json_encode($json_data);
+	}
+	else
+	{
+		$row = $api->sp_insert_order($name,$type,$uid);
+
+		if (is_array($row)) {
+			$row = json_encode($row);
+		}
+	}
+	
+	$response->getBody()->write($row);
+	return $response;
+});
+
 $app->run();
 
 ?>
