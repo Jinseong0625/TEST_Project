@@ -55,6 +55,35 @@ $app->post('/User', function ($request, $response, $args) use($api)
 	return $response;
 });
 
+$app->post('/category', function ($request, $response, $args) use($api) 
+{
+	$params = $request->getParsedBody();
+	$name = $params['u_name'];
+	$description = $params['description'];
+	$type = $params['type'];
+	if($name == null)
+	{
+		$json_data = array
+        (
+            "error" => "E1003",
+            "data" => ""
+        );
+
+		$row = json_encode($json_data);
+	}
+	else
+	{
+		$row = $api->sp_insert_category($name,$description,$type);
+
+		if (is_array($row)) {
+			$row = json_encode($row);
+		}
+	}
+	
+	$response->getBody()->write($row);
+	return $response;
+});
+
 $app->run();
 
 ?>

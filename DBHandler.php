@@ -67,6 +67,37 @@ class DBHandler extends DBConnector{
 
         return $json_data;
     }
+
+    // 카테고리 정보 저장하기
+    public function sp_insert_category($name,$description,$type)
+    {
+        $error = "E0000";
+
+        if(!($stmt = $this->db->prepare("CALL sp_insert_category(?,?,?)"))){
+            $error = "E1000";
+        }
+        if(!$stmt->bind_param("ssi", $name,$description,$type)){
+            $error = "E1001";
+        }
+        if(!$stmt->execute()){
+            $error = "E1002";
+        }
+
+        $res = $stmt->get_result();
+        $data = array();
+
+        while($row = $res->fetch_assoc()){
+            $data[] = $row;
+        }
+
+        $json_data = array
+        (
+            "error" => $error,
+            "data" => $data
+        );
+
+        return $json_data;
+    }
     
 }
 
