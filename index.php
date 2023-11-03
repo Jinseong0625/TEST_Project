@@ -141,6 +141,37 @@ $app->post('/order', function ($request, $response, $args) use($api)
 	return $response;
 });
 
+$app->post('/menu', function ($request, $response, $args) use($api) 
+{
+	$params = $request->getParsedBody();
+	$description = $params['description'];
+	$name = $params['name'];
+	$price = $params['price'];
+	$image_url = $params['image_url'];
+	$category_id = $params['category_id'];
+	if($name == null)
+	{
+		$json_data = array
+        (
+            "error" => "E1003",
+            "data" => ""
+        );
+
+		$row = json_encode($json_data);
+	}
+	else
+	{
+		$row = $api->sp_insert_order($description,$name,$price,$image_url,$category_id);
+
+		if (is_array($row)) {
+			$row = json_encode($row);
+		}
+	}
+	
+	$response->getBody()->write($row);
+	return $response;
+});
+
 $app->run();
 
 ?>
