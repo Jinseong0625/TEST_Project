@@ -28,11 +28,11 @@ $app->get('/user/{uid}', function ($request, $response, $args) use($api)
 $app->post('/User', function ($request, $response, $args) use($api) 
 {
 	$params = $request->getParsedBody();
-	$birthday = $params['u_birthday'];
-	$name = $params['u_name'];
+	$UUID = $params['UUID'];
+	$PLATFORM = $params['PLATFORM'];
 	$nickname = $params['u_nickname'];
-	$phone = $params['u_phon'];
-	if($name == null)
+	$Gourmet_Points = $params['Gourmet_Points'];
+	if($UUID == null)
 	{
 		$json_data = array
         (
@@ -44,7 +44,7 @@ $app->post('/User', function ($request, $response, $args) use($api)
 	}
 	else
 	{
-		$row = $api->sp_insert_User($birthday,$name,$nickname,$phone);
+		$row = $api->sp_insert_User($UUID,$PLATFORM,$nickname,$Gourmet_Points);
 
 		if (is_array($row)) {
 			$row = json_encode($row);
@@ -55,11 +55,10 @@ $app->post('/User', function ($request, $response, $args) use($api)
 	return $response;
 });
 
-$app->post('/category', function ($request, $response, $args) use($api) 
+$app->post('/shop/category', function ($request, $response, $args) use($api) 
 {
 	$params = $request->getParsedBody();
 	$name = $params['name'];
-	$description = $params['description'];
 	$type = $params['type'];
 	if($name == null)
 	{
@@ -73,7 +72,36 @@ $app->post('/category', function ($request, $response, $args) use($api)
 	}
 	else
 	{
-		$row = $api->sp_insert_category($name,$description,$type);
+		$row = $api->sp_insert_shop_category($name,$type);
+
+		if (is_array($row)) {
+			$row = json_encode($row);
+		}
+	}
+	
+	$response->getBody()->write($row);
+	return $response;
+});
+
+$app->post('/menu/category', function ($request, $response, $args) use($api) 
+{
+	$params = $request->getParsedBody();
+	$sidx = $params['sidx'];
+	$name = $params['name'];
+	$type = $params['type'];
+	if($sidx == null)
+	{
+		$json_data = array
+        (
+            "error" => "E1003",
+            "data" => ""
+        );
+
+		$row = json_encode($json_data);
+	}
+	else
+	{
+		$row = $api->sp_insert_menu_category($sidx,$name,$type);
 
 		if (is_array($row)) {
 			$row = json_encode($row);

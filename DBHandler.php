@@ -12,7 +12,7 @@ class DBHandler extends DBConnector{
     {
         $error = "E0000";
 
-        if (!($stmt = $this->db->prepare("CALL sp_select_User(?)"))) {
+        if (!($stmt = $this->db->prepare("CALL sp_select_user(?)"))) {
             $error = "E1000"; // Prepare failed
         }
         if (!$stmt->bind_param("s", $uid)) {
@@ -38,14 +38,14 @@ class DBHandler extends DBConnector{
     }
 
     // 회원 정보 저장하기
-    public function sp_insert_User($birthday,$name,$nickname,$phone)
+    public function sp_insert_User($UUID,$PLATFORM,$nickname,$Gourmet_Points)
     {
         $error = "E0000";
 
         if(!($stmt = $this->db->prepare("CALL sp_insert_User(?,?,?,?)"))){
             $error = "E1000";
         }
-        if(!$stmt->bind_param("sssi", $birthday,$name,$nickname,$phone)){
+        if(!$stmt->bind_param("sssi", $UUID,$PLATFORM,$nickname,$Gourmet_Points)){
             $error = "E1001";
         }
         if(!$stmt->execute()){
@@ -68,15 +68,46 @@ class DBHandler extends DBConnector{
         return $json_data;
     }
 
-    // 카테고리 정보 저장하기
-    public function sp_insert_category($name,$description,$type)
+    // 가게 카테고리 정보 저장하기
+    public function sp_insert_shop_category($name,$type)
+    {
+        $error = "E0000";
+
+        if(!($stmt = $this->db->prepare("CALL sp_insert_category(?,?)"))){
+            $error = "E1000";
+        }
+        if(!$stmt->bind_param("si", $name,$type)){
+            $error = "E1001";
+        }
+        if(!$stmt->execute()){
+            $error = "E1002";
+        }
+
+        $res = $stmt->get_result();
+        $data = array();
+
+        while($row = $res->fetch_assoc()){
+            $data[] = $row;
+        }
+
+        $json_data = array
+        (
+            "error" => $error,
+            "data" => $data
+        );
+
+        return $json_data;
+    }
+
+    // 메뉴 카테고리 정보 저장하기
+    public function sp_insert_menu_category($sidx,$name,$type)
     {
         $error = "E0000";
 
         if(!($stmt = $this->db->prepare("CALL sp_insert_category(?,?,?)"))){
             $error = "E1000";
         }
-        if(!$stmt->bind_param("ssi", $name,$description,$type)){
+        if(!$stmt->bind_param("ssi", $sidx,$name,$type)){
             $error = "E1001";
         }
         if(!$stmt->execute()){
