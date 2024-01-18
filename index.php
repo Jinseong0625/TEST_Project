@@ -112,6 +112,42 @@ $app->post('/menu/category', function ($request, $response, $args) use($api)
 	return $response;
 });
 
+$app->post('/shop', function ($request, $response, $args) use($api) 
+{
+	$params = $request->getParsedBody();
+	$name = $params['name'];
+	$sc_idx = $params['sc_idx'];
+	$s_rul = $params['s_rul'];
+	$address = $params['address'];
+	$number = $params['number'];
+	$content = $params['content'];
+	$review_cnt = $params['review_cnt'];
+	$dibs_cnt = $params['dibs_cnt'];
+	$opentime = $params['opentime'];
+	$status = $params['status'];
+	if($name == null)
+	{
+		$json_data = array
+        (
+            "error" => "E1003",
+            "data" => ""
+        );
+
+		$row = json_encode($json_data);
+	}
+	else
+	{
+		$row = $api->sp_insert_shop($name,$sc_idx,$s_rul,$address,$number,$content,$review_cnt,$dibs_cnt,$opentime,$status);
+
+		if (is_array($row)) {
+			$row = json_encode($row);
+		}
+	}
+	
+	$response->getBody()->write($row);
+	return $response;
+});
+
 $app->post('/board', function ($request, $response, $args) use($api) 
 {
 	$params = $request->getParsedBody();
